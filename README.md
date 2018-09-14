@@ -1,5 +1,5 @@
 -------------------------------------
-	Min 4 Image Viewer
+Min 4 Image Viewer
 -------------------------------------
 
 	Image viewer program for Linux running X-Desktop enviroment.
