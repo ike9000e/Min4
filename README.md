@@ -3,42 +3,68 @@ Min 4 Image Viewer
 -------------------------------------
 
 	Image viewer program for Linux running X-Desktop enviroment.
-	Single window for fast and convenient view and browse, with acurate zoom and pan features.
-	Key and mouse navigation customizable trough command line interface
-	or configuration file.
-	Internally uses Imlib2 library, so can load any image formats that 
-	Imlib2 understands. This includes: JPEG, PNG, GIF, BMP and more.
+	Single window for fast and convenient view and browse, with acurate zoom and
+	pan features. 
+	Key and mouse navigation customizable trough command line
+	interface or configuration file. Internally uses Imlib2 library, so can 
+	load any image formats that Imlib2 understands, including 
+	JPEG, PNG, GIF, BMP and more.
 
 
 Build Requirements
 ---------------------------
 
-	Following libraries are needed and should be installed 
-	as developement versions on the system:
+	Few libraries are needed and should be accessible 
+	durning the build process. Based on package names that 
+	Ubuntu Linux distribution provides, they are as follows:
 	
-		* Imlib2
+		* libx11-xcb-dev
+		* libimlib2-dev
+	
+	As a result of the above; plus, the other libraries that this project 
+	depends on, that should be already present on the system
+	since GCC and G++ should already have been installed; names of all 
+	the libraries that are passed to the compiler on the command 
+	line are:
+	
 		* dl
-		* X11
 		* pthread
+		* X11
+		* Imlib2
+
 
 Build Instructions
 --------------------------
 
-	* Unpack downloaded archive file.
-	* Navigate to a subdirectory "./projects/01_cli".
+	* Unpack downloaded source code archive file.
+	* Navigate to a subdirectory "projects/01_cli".
 	* Make sure it contains "makefile" file.
 	* Use command "make release" to compile and build.
 	* If successful, binary file will be created in
-	  "./projects/01_cli/bin/release" subdirectory
+	  the "projects/01_cli/bin/release" subdirectory
+
+
+Changelog - Version History
+-------------------------------------------
+	
+	v1.1
+		Initial release.
+
+	v1.2
+		* Option to specify initial anti alias settings ('--aa_whence').
+		* Window title bar now shows current zoom level.
+		* Added '--common_exts' command line option.
+		* Added '--bSelfExtListEx' command line option.
+		* Readme file and Usage updates.
 
 
 Command Line Interface
 -----------------------------------
 
-	min4iv --filelist FILE [OPTIONS]
-	
 	min4iv --file_in_dir FILE [OPTIONS]
-	
+
+	min4iv --filelist FILE [OPTIONS]
+
 	min4iv [OPTIONS] file1 file2 file3 ... fileN
 
 
@@ -65,7 +91,7 @@ OPTIONS
 
 	--help
 
-		Show this help and exit.
+		Show this help and exits.
 
 	--sort_mode alpha|natsort|none  --  default: alpha
 
@@ -74,7 +100,7 @@ OPTIONS
 		different than 'none'.
 		Sorting is done on UTF-8 strings only.
 		In alphanumerical sorting, 'alpha', comparision is
-		case-insensitive while case is considered only for english
+		case-insensitive, while case is considered only for english
 		characters.
 
 	--initial_metrics fit|center|center2  --  default: fit
@@ -86,7 +112,7 @@ OPTIONS
 	--zoom_step FLOAT  --  default: 1.17
 
 		Floating point value used when zoommin-in or out.
-		Eg. value 1.2 causes bigger scalling steps than value 1.1.
+		Fe. value 1.2 causes bigger scalling steps than value 1.1.
 
 	--pidfile FILE
 
@@ -118,7 +144,7 @@ OPTIONS
 		While window can be maximized with the '--wmax' switch instead, this one
 		is provided as an alternative, potentially smoother way.
 		Eg. '--wmax2 0.1/B' makes window 'maximized' but with the height set to 
-		90 percent instead, leaving some space below the window not covered.
+		90 percent instead, leaving some space below the window, not covered.
 
 	--bShowDbg
 
@@ -155,7 +181,7 @@ OPTIONS
 		Eg. set the last character to '%00' to have it itself ignored,
 		but actually, percent-decode the other characters.
 
-	--bShowActions
+	--bShowActions 0|1         --       default: 0
 
 		Shows action names and exits.
 		These are names that can be used when binding action to keys
@@ -168,29 +194,31 @@ OPTIONS
 		KEY can also be specified as HEX value with 0x prefix,
 		eg. '0xffbe' (F1 in this case) (This is an Xlib feature).
 
-	--bNoDefaultBinds 0|1   --   default: 0
+	--bNoDefaultBinds 0|1      --      default: 0
 
 		Do not assign any default binds.
-		This switch must appear before any actual user bind made via
-		the '--bind_k' switch.
+		On command line, this switch must appear before any actual user
+		bind made via the '--bind_k' option.
 
-	--bShowBinds 0|1   --   default: 1
+	--bShowBinds 0|1        --        default: 1
 
 		Shows all key binds in the program on startup. Includes
 		any default binds.
 
-	--nMoveByKeyAmount NUMBER    --    default: 16
+	--nMoveByKeyAmount NUMBER       --       default: 16
 
-		How much to move when using keyboard, in sigle button press.
+		How much to move the image when using keyboard, in sigle key press.
 
 	--config_file FILE
 
 		Configuration file that contains command line options.
 		Each line should contain option name followed by value. Simple parsing.
 		Example file contents:
+
 			--bg_fs FF88FF
 			--bind_k Delete=Quit
 			--bind_k c=Quit
+
 		Each line must begin with correct option name, that starts with
 		double dash, followed by space character. Only after that space
 		character the string can be quoted.
@@ -198,10 +226,49 @@ OPTIONS
 		characters, the line must start with a double dash ('--'), followed 
 		by space, then followed by quoted file name.
 
+	--common_exts Ext1,Ext2,Ext3,...,ExtN
+
+		Specify file name extensions of the image files.
+		Optional, and there is already default set of exts provided.
+		Comma separated list, lowercase characters, no dot prefix.
+		Simply, these are file types that the input directory is scanned for,
+		that are being added to the browse list, on startup.
+		Used when starting with the '--file_in_dir' option.
+		This may look something like:
+
+			png,jpg,jpeg,jpe,gif,tiff,tif,tga,ico,bmp
+
+	--bSelfExtListEx 1|0       --       default: 1
+
+		Whenever to extend the browse list with files with the same
+		file name extension as the input file itself, when
+		scanning directory for the other images.
+		Ie. when set to true, browse list gets potentially extended,
+		otherwise doesn't.
+		Related to '--file_in_dir' and '--common_exts'.
+
+	--aa_whence FLAGS        --        default: 's'
+
+		Conditions telling when to use anti alias (AA) on the image.
+		FLAGS can be combination of the following letters:
+
+			's': AA when shrinked,
+			'u': AA when unaltered, ie. zoom is 1.0,
+			'e': AA when enlarged,
+			'a': AA at all zoom levels,
+
+			'0': Diable AA.
+
+		Eg. when set to 'se', AA will be used when the image is
+		shrinked ('s') and when enlarged ('e'), but not when 
+		unaltered (at zoom 1.0).
+		Default AA setting is so that it is only applied when the
+		image is shrinked. To have AA disabled all the time,
+		set this argument to '0'.
+
 
 	Notes About Binding Actions
 	---------------------------
-		The action 'MousePanButton' can only be bound to a mouse button,
+		The action 'MousePanButton' can only be bound to mouse buttons:
 		M1, M2, M3, and so forth. Eg. 'M1=MousePanButton'
-
-
+		
