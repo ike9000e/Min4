@@ -31,6 +31,17 @@ Build Requirements
 		* pthread
 		* X11
 		* Imlib2
+		
+	If installing Imlib2 is the problem on your system, 
+	then it can be added manually to the build by
+	downloadint the developement archive from linux repository.
+	Create new directory "./libraries/imlib2"
+	and unpack downloaded package into there.
+	As a result, main Imlib2 header and library should be in these 
+	directories:
+		./libraries/imlib2/inc/imlib2/Imlib2.h
+		./libraries/imlib2/lib/libImlib2.so
+
 
 
 Build Instructions
@@ -47,15 +58,21 @@ Build Instructions
 Changelog - Version History
 -------------------------------------------
 	
-	v1.1
-		Initial release.
-
 	v1.2
 		* Option to specify initial anti alias settings ('--aa_whence').
 		* Window title bar now shows current zoom level.
 		* Added '--common_exts' command line option.
 		* Added '--bSelfExtListEx' command line option.
 		* Readme file and Usage updates.
+
+	v1.3
+		* New possible bindings for anti-alias manipulation: On, Off and Auto.
+		  Default keys: a, b and l, respectively. Auto uses '--aa_whence'.
+		* Improved keyboard binding configuration - possibility to specify modkeys.
+		* Minor keyboard navigation improvements.
+		* Main window icon.
+		* Removed extra unnecessary blending step on fully opaque images.
+
 
 
 Command Line Interface
